@@ -26,7 +26,22 @@ const thoughtSchema = new Schema(
         //arrays of nested documents created with the reactionSchema
 //Schema settings Create a virtual called reactionCount that retrieves the length of the thought's reactions array field on query.
     }, 
+    {
+        toJSON: {
+            virtuals: true,
+            getters: true,
+        },
+        id: false,
+    },
 );
+
+thoughtSchema
+    .virtual('reactionCount')
+    .get(function () {
+    return this.reactions.length;
+});
+
+thought.reactionCount;
 
 const Thought = model('thought', thoughtSchema);
 
