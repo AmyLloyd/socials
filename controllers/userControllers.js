@@ -69,6 +69,45 @@ module.exports = {
         } catch (err) {
             res.status(500).json(err);
         }
+    },
+    //Add a friend
+    //findby friend_id (userId), if not found create user
+    //update user_id  
+    //Endpoit is put - update :userId/friends/:friendId
+    async addFriend(req, res) {
+        try {
+            const user = await User.findOneAndUpdate(
+                { _id: req.params.userId },
+                { $set: { friend_id: req.params.friendId } },
+                { new: true }
+            )
+            if(!user) {
+                res.status(404).json({ message: 'No user with this id' });
+            }
+            if(!friendId) {
+                res.status(404). json( { message: 'Must include a valid friend Id'});
+            }
+        } catch (err) {
+            res.status(500).json(err);
+        }
+    },
+
+    async deleteFriend(req, res) {
+        try {
+            const user = await User.findOneAndDelete(
+                { friends: req.params.userId },
+                { $pull: { students: req.params.userId } },
+                { new: true }
+            )
+
+            if(!user) {
+                res.status(404).json({ message: 'No user found with that id' });
+            }
+            res.status.json({ message: 'Friend successfully deleted' });
+        } catch {
+            console.log(err);
+            res.status(500).json(err);
+        }
     }
 
 };

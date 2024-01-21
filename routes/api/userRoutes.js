@@ -20,10 +20,10 @@ router
   .delete(deleteUser)
 
 // /api/users/:userId/friends/:userId
-// router 
-//     .route('/:userId/friends/:userId')
-//     .get(addFriend)
-//     .delete(deleteFriend)
+router 
+    .route('/:userId/friends/:friendId')
+    .put(addFriend)
+    .delete(deleteFriend)
 
 
 module.exports = router;
