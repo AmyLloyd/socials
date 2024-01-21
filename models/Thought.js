@@ -35,18 +35,13 @@ const thoughtSchema = new Schema(
     },
 );
 
-
-
 const Thought = model('thought', thoughtSchema);
 
-// thoughtSchema
-//     .virtual('reactionCount')
-//     .get(function () {
-//     return this.reactions.length;
-// });
-
-// console.log(thought.reactionCount);
-
+thoughtSchema
+    .virtual('reactionCount')
+    .get(function () {
+    return this.reactions.length;
+});
 //See https://mongoosejs.com/docs/tutorials/getters-setters.html regarding testing getter in Date
 
 
