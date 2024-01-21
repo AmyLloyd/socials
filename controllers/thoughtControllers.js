@@ -109,7 +109,7 @@ module.exports = {
                 res.status(404).json("No thought with this id")
                 return
             }
-            res.status(200).json('Reaction added');
+            res.status(200).json(reaction);
 
 
         } catch (err) {
