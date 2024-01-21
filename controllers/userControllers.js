@@ -4,7 +4,7 @@ module.exports = {
     //Get all users
     async getUsers(req, res) {
         try {
-            const users = await User.find().populate('thoughts');
+            const users = await User.find().populate('thoughts').populate('friends');
             res.json(users);
         } catch (err) {
             res.status(500).json(err);
@@ -78,15 +78,14 @@ module.exports = {
         try {
             const user = await User.findOneAndUpdate(
                 { _id: req.params.userId },
-                { $set: { friend_id: req.params.friendId } },
+                { $set: { friends: req.params.friendId } },
                 { new: true }
             )
             if(!user) {
                 res.status(404).json({ message: 'No user with this id' });
             }
-            if(!friendId) {
-                res.status(404). json( { message: 'Must include a valid friend Id'});
-            }
+            res.json('Friend added');
+
         } catch (err) {
             res.status(500).json(err);
         }
@@ -94,17 +93,18 @@ module.exports = {
 
     async deleteFriend(req, res) {
         try {
-            const user = await User.findOneAndDelete(
-                { friends: req.params.userId },
-                { $pull: { students: req.params.userId } },
+            const user = await User.findOneAndUpdate(
+                { _id: req.params.userId },
+                { $pull: { friends: req.params.friendId } },
                 { new: true }
             )
 
             if(!user) {
                 res.status(404).json({ message: 'No user found with that id' });
+                return
             }
-            res.status.json({ message: 'Friend successfully deleted' });
-        } catch {
+            res.status(200).json({ message: 'Friend successfully deleted' });
+        } catch (err) {
             console.log(err);
             res.status(500).json(err);
         }
